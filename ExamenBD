@@ -54,7 +54,7 @@ CREATE TABLE Article(
   PRIMARY KEY (idarticle)
   );
 
---Tabla que contiene las lineas de cada Pedido, depende de tabla articulos
+--Tabla que contiene las lineas de los Pedido, depende de tabla articulos
 CREATE TABLE ComandaVendaLinea(
   idlinea INT,
   idarticle INT REFERENCES Article(idarticle),
