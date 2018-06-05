@@ -16,6 +16,24 @@ CREATE TABLE Persona(
   PRIMARY KEY (idpersona)
 
 );
+-- *******NOTA OPCIONAL: SI POR LO QUE SEA NOS LA HACE HACER FULL RELACIONAL LA TABLA PERSONA QUEDARIA ASI:
+
+-- CREATE TABLE Persona(
+ -- idpersona INT,
+  -- nom TEXT,
+  -- dni TEXT,
+  -- PRIMARY KEY (idpersona)
+-- );
+
+-- Y HABRIA QUE MAPEAR LOS TELEFONOS ASI
+
+-- CREATE TABLE TELEFONOS(
+-- IDPERSONA INT REFERENCE Persona(idpersona),
+-- TELEFON VARCHAR(9),
+-- PRIMARY KEY (IDPERSONA,TELEFON)
+-- );
+ 
+---------------------------------------------------------------------------------------------------------
 
 --Tabla cliente Hereda de Persona sus campos y su
 --Clave Primaria
