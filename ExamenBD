@@ -1,0 +1,111 @@
+--Definimos el tipo Adreca ya que muchas tablas dependen de el
+CREATE TYPE Adreca AS (
+  poblacion TEXT,
+  provincia TEXT,
+  cp TEXT,
+  domicili TEXT
+);
+
+--Tabla Persona no depende de nada, se usuara para que herede cliente y proveidor
+
+CREATE TABLE Persona(
+  idpersona INT,
+  nom TEXT,
+  dni TEXT,
+  telefons VARCHAR(9) ARRAY,
+  PRIMARY KEY (idpersona)
+
+);
+
+--Tabla cliente Hereda de Persona sus campos y su
+--Clave Primaria
+CREATE TABLE Client(
+  enviar_publicitat BOOLEAN,
+  PRIMARY KEY (idpersona)
+)INHERITS (Persona);
+
+--Igual que cliente pero en este caso no hay campos adicionales
+CREATE TABLE Proveeidor(
+  PRIMARY KEY (idpersona)
+)INHERITS (Persona);
+
+
+
+
+--Tabla que mapea las adrecas de los clientes  Clientes(ClientAdreca[])
+
+
+-- Aqui se podria haber hecho una subtabla Adreca y que esta fuera una tabla
+-- Que mapeara las ID de clciente contra la ID de Adreca.
+--Pero manel nos explico que con las adrecas no hacia falta ya que una Adreca no deberia poder reutilizarse
+-- Casi nunca, es por ello que se mapea el id del cliente con el objeto Adreca directamente
+CREATE TABLE Client_Adrecas(
+  idclient INT REFERENCES Client(idpersona),
+  Adreca Adreca,
+  PRIMARY KEY (idclient,Adreca)
+);
+
+-- Tabla articulos no depende de nada
+CREATE TABLE Article(
+  idarticle INT,
+  nom TEXT,
+  preu_venda DECIMAL,
+  stock INT,
+  PRIMARY KEY (idarticle)
+  );
+
+--Tabla que contiene las lineas de cada Pedido, depende de tabla articulos
+CREATE TABLE ComandaVendaLinea(
+  idlinea INT,
+  idarticle INT REFERENCES Article(idarticle),
+  descripcio TEXT,
+  preu DECIMAL,
+  quantitat INT,
+  import DECIMAL,
+  PRIMARY KEY (idlinea)
+  );
+
+--Tabla de pedidos depende de cliente
+CREATE TABLE ComandaVenda(
+  idcomanda INT,
+  data_entrega DATE,
+  idclient INT REFERENCES Client(idpersona),
+  import DECIMAL,
+  PRIMARY KEY (idcomanda)
+
+);
+
+--Tabla que mapeara las lineas de cada pedido ComandaVenda(Comandavendalinea[])
+CREATE TABLE Comanda_Lineas(
+  idcomanda INT REFERENCES ComandaVenda(idcomanda),
+  idlinea INT REFERENCES ComandaVendaLinea(idlinea),
+  PRIMARY KEY (idcomanda,idlinea)
+);
+
+CREATE TABLE Botiga (
+  idbotiga INT,
+  nom text,
+  adreca Adreca,
+  num_treballadors INT,
+  PRIMARY KEY (idbotiga)
+);
+--Tabla que mapeara los pedidos de una botiga Botiga(ComandesVenda[])
+CREATE TABLE Botiga_Comandes(
+  idbotiga INT REFERENCES Botiga(idbotiga),
+  idcomanda INT REFERENCES ComandaVenda(idcomanda),
+  PRIMARY KEY (idbotiga,idcomanda)
+);
+
+
+--Tabla que mapeara los Articulos de una Botiga Botiga(Articles[])
+
+CREATE TABLE Botiga_Articles(
+
+  idbotiga INT REFERENCES Botiga(idbotiga),
+  idarticle INT REFERENCES Article(idarticle),
+  PRIMARY KEY (idbotiga,idarticle)
+
+);
+
+
+
