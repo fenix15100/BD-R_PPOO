@@ -6,7 +6,7 @@ CREATE TYPE Adreca AS (
   domicili TEXT
 );
 
---Tabla Persona no depende de nada, se usuara para que herede cliente y proveidor
+--Tabla Persona no depende de nada, se usuara para que herede cliente y proveidor Los telefonos iran en un array de Strings
 
 CREATE TABLE Persona(
   idpersona INT,
